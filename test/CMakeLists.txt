@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 2.8)
+
+project(test_nx_log)
+SET(TEST_PROJECT_NAME test_nx_log)
+
+SET(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} -O0 -Wall -g -ggdb")
+ADD_DEFINITIONS(-DDEBUG)
+
+set(TEST_SRCS test_nx_log.c)
+
+INCLUDE_DIRECTORIES(../)
+
+LINK_DIRECTORIES(${LIBRARY_OUTPUT_PATH} ${CMAKE_BINARY_DIR})
+add_executable(${TEST_PROJECT_NAME} ${TEST_SRCS})
+ADD_DEPENDENCIES(${TEST_PROJECT_NAME} nx_log  )
+TARGET_LINK_LIBRARIES(${TEST_PROJECT_NAME} -lnx_log  m pthread rt)
+
