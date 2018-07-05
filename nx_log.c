@@ -557,7 +557,7 @@ void nx_syn_write_log(int  level,  const char* file,  const char* function,
 
 int test_nx_log(){
 
-    char * logpath ="/data1/home/mysql/twe/ofo_test/3001/log/";
+    char * logpath ="/data1/home/test/log/";
     nx_logger_init(1,NX_LEVEL_NULL,logpath,10);
 
     char *msg = logpath;

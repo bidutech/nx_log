@@ -20,7 +20,7 @@ int main(){
 
 int test_nx_log1(){
 
-    char * logpath ="/data1/home/mysql/twe/ofo_test/3001/log/";
+    char * logpath ="/data1/home/test/log/";
     nx_logger_init(1,NX_LEVEL_NULL,logpath,10);
 
     char *msg = logpath;
