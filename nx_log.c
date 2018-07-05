@@ -83,7 +83,7 @@ static void _nx_write_log(int level,char * buf,int len) {
         return ;
     }
 
-    int        r = -1;/*stat 调用errno*/
+    int        r = -1;/*stat call. errno*/
     int        newfd = -1;
     char       rotate[MAX_FILE_NAME] = {0};
     ssize_t    n;
@@ -116,7 +116,7 @@ static void _nx_write_log(int level,char * buf,int len) {
     old = &(l->log_files[level].stat_info);
 
     nx_lock_log_file(l,l->plock_fd,level);
-    /*write buf 长度小于内核缓冲区大小 多进程 不用加锁*/
+    /*write buf. multi proces if buflen < kernel buflen no need lock*/
     n = nx_write(l->log_files[level].fd, buf, len);
     if (n < 0) {
         l->nerror++;
@@ -133,7 +133,7 @@ static void _nx_write_log(int level,char * buf,int len) {
     }
 
     if(r == ENOENT){
-        //文件不存在
+        //file not find
         goto  rotate;
     }
     if(info.st_ino == old->st_ino){
@@ -145,7 +145,6 @@ static void _nx_write_log(int level,char * buf,int len) {
 rotate:
     //lock
     // if use lock l->log_files[level].name must exist
-
     r = -1;
     nx_lock_log_file(l,l->plock_fd,level);
     gettimeofday(&tv, NULL);
@@ -163,12 +162,10 @@ rotate:
                       l->log_files[level].name, strerror(errno));
     }
 
-    if(r != ENOENT /*文件存在*/ && info.st_ino == old->st_ino){
+    if(r != ENOENT  && info.st_ino == old->st_ino){
         rename(l->log_files[level].name,rotate);
     }
-    /*also write to old file */
-    //n = nx_write(l->log_files[level].fd, buf, len);
-    newfd = open(/*tmpfile*/l->log_files[level].name,
+    newfd = open(l->log_files[level].name,
                  O_WRONLY | O_APPEND | O_CREAT, 0644);
     if(newfd <0){
         rename(rotate,l->log_files[level].name);
@@ -178,8 +175,6 @@ rotate:
         return;
     }
     l->log_files[level].fd = dup2(newfd,l->log_files[level].fd);
-    /* write to new file */
-    //n = nx_write(l->log_files[level].fd, buf, len);
     close(newfd);
 
     if (0 !=stat(l->log_files[level].name,  &(l->log_files[level].stat_info))){
@@ -712,7 +707,7 @@ int test_nx_log(){
 }
 
 
-char* get_thread_name()
+char* test_get_thread_name()
 {
     //    int = 0;
     //    pthread_t tid = pthread_self();

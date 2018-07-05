@@ -84,7 +84,6 @@ struct nx_logger;
 struct nx_log_msg{
     int level;
     char msg[NX_LOG_MAX_LEN];
-//    struct nx_logger *l;
 };
 
 struct _file{
@@ -132,10 +131,6 @@ struct nx_logger{
      *  process lock fd used when rotate and write file
      *****************************************************************/
 
-
-    //int             msgq_plock_fd;              /* async queue use */
-    //pthread_mutex_t mutex;                      /* no use*/
-    //pthread_mutex_t queue_mutex;                /* async queue used */
     int             pid;
     int             ppid;
 
@@ -152,7 +147,6 @@ struct nx_logger{
 };
 
 
-//日志管理
 /***********************同步log *********************/
 #define NX_SYN_LOG_DEBUG(format, ...)\
     nx_syn_write_log(NX_LEVEL_DEBUG, __FILE__, \
