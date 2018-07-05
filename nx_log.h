@@ -1,7 +1,7 @@
 /*************************************************************************
-    > File Name: nc_lognx.h
-    > Author: shanhai2015
-    > Mail: shanhai2015
+    > File Name: nx_log.h
+    > Author: bidutech
+    > Mail: bidutech
     > Created Time: 2018年04月11日 星期三 14时47分09秒
     this is process and thread safe logger use flock and mutex
     suport multi process single thread multi process multi thread
