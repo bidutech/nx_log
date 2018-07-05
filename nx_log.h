@@ -61,9 +61,9 @@ typedef enum {
 #define ENUM_LEVEL_INI_LOG_NAME() static char \
     nx_log_name[MAX_LOG_LEVEL_FILE][MAX_FILE_NAME] = {\
     "nc_null.log", \
-    "ares.debug.log",\
-    "ares.info.log",\
-    "ares.error.log",\
+    "ai.debug.log",\
+    "ai.info.log",\
+    "ai.error.log",\
 }
 
 #define G_NX_LOG_PROCESS_LOCK_FILE_NAME  "/tmp/.nx_plock.lock"
