@@ -60,10 +60,10 @@ typedef enum {
 #define MAX_LOG_LEVEL_FILE NX_LEVEL_OFF
 #define ENUM_LEVEL_INI_LOG_NAME() static char \
     nx_log_name[MAX_LOG_LEVEL_FILE][MAX_FILE_NAME] = {\
-    "nc_null.log", \
-    "ai.debug.log",\
-    "ai.info.log",\
-    "ai.error.log",\
+    "null.log", \
+    "debug.log",\
+    "info.log",\
+    "error.log",\
 }
 
 #define G_NX_LOG_PROCESS_LOCK_FILE_NAME  "/tmp/.nx_plock.lock"
@@ -109,6 +109,7 @@ struct nx_logger{
     char            log_path[MAX_FILE_NAME];        /* log store path*/
     char            rotate_format[MAX_FILE_NAME];   /* same c printf*/
     struct _file    log_files[MAX_LOG_LEVEL_FILE];  /* log file descriptor */
+    char            prefilename[MAX_FILE_NAME];
     nx_log_level    level;                          /* log level */
     int             w_threads;
     int             async;
@@ -184,6 +185,7 @@ param:
  log_file_max_size: log file max size will rotate
 ****************************************************/
 struct nx_logger * nx_logger_init(int asyn,int df_level,char * log_path,
+                                  char *prefilename,
                                   int log_file_max_size/*M*/);
 
 int  nx_logger_deinit(struct nx_logger *l);

@@ -419,7 +419,13 @@ static int nx_create_dir(const char *path_name)
     return   0;
 }
 
-struct nx_logger * nx_logger_init(int asyn,int df_level,char * log_path, int log_file_max_size/*M*/){
+struct nx_logger * nx_logger_init(int asyn,int df_level,char *prefilename,
+                                  char * log_path, int log_file_max_size/*M*/){
+    if(log_path == NULL || prefilename == NULL ){
+        nx_log_stderr("log_path or prefilename is null\n");
+        return NULL;
+    }
+
 
     static struct nx_logger *l = (struct nx_logger *)&nx_logger_instance;
     int i =0;
@@ -428,6 +434,8 @@ struct nx_logger * nx_logger_init(int asyn,int df_level,char * log_path, int log
     nx_create_dir(log_path);
 
     snprintf(l->log_path,sizeof(l->log_path),log_path);
+    snprintf(l->prefilename,sizeof(l->prefilename),prefilename);
+
     snprintf(l->rotate_format, sizeof(l->rotate_format),"%s","%Y%m%d%H%M%S");
     l->level = df_level;
     l->file_max_size = log_file_max_size;
@@ -439,7 +447,8 @@ struct nx_logger * nx_logger_init(int asyn,int df_level,char * log_path, int log
         if(i == NX_LEVEL_NULL)
             continue;
         if(l->inited != 1){
-            snprintf(l->log_files[i].name,sizeof(l->log_files[i].name),"%s/%s",l->log_path,nx_log_name[i]);
+            snprintf(l->log_files[i].name,sizeof(l->log_files[i].name),
+                     "%s/%s.%s",l->log_path,prefilename,nx_log_name[i]);
             l->log_files[i].fd = open(l->log_files[i].name, O_WRONLY | O_APPEND | O_CREAT, 0644);
             if (l->log_files[i].fd < 0) {
                 for(i = 0; i < MAX_LOG_LEVEL_FILE; i++ ){
@@ -591,7 +600,7 @@ void nx_syn_write_log(int  level,  const char* file,  const char* function,
 int test_nx_log(){
 
     char * logpath ="/data1/home/test/log/";
-    nx_logger_init(1,NX_LEVEL_NULL,logpath,10);
+    nx_logger_init(1,NX_LEVEL_NULL,"nx",logpath,10);
 
     char *msg = logpath;
 
@@ -617,7 +626,7 @@ int test_nx_log(){
     snprintf(l->rotate_format, sizeof(l->rotate_format),"%s","%Y%m%d%H%M%S");
     /**********************************************************************/
 
-    nx_logger_init(0,NX_LEVEL_INFO,logpath,10);
+    nx_logger_init(0,NX_LEVEL_INFO,"nx",logpath,10);
     //    l = &nx_logger_instance;
 
     char buf[1024] ={0};

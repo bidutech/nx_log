@@ -21,7 +21,7 @@ int main(){
 int test_nx_log1(){
 
     char * logpath ="/data1/home/test/log/";
-    nx_logger_init(1,NX_LEVEL_NULL,logpath,10);
+    nx_logger_init(1,NX_LEVEL_NULL,"nx",logpath,10);
 
     char *msg = logpath;
 
@@ -35,7 +35,7 @@ int test_nx_log1(){
 
     return 0;
 
-    struct nx_logger *l = nx_logger_init(0,NX_LEVEL_INFO,logpath,10);
+    struct nx_logger *l = nx_logger_init(0,NX_LEVEL_INFO,"nx",logpath,10);
 
     /**********************Test code*******************/
 
@@ -58,7 +58,7 @@ int test_nx_log1(){
     snprintf(l->rotate_format, sizeof(l->rotate_format),"%s","%Y%m%d%H%M%S");
     /**********************************************************************/
 
-    nx_logger_init(0,NX_LEVEL_INFO,logpath,10);
+    nx_logger_init(0,NX_LEVEL_INFO,"nx",logpath,10);
     //    l = &nx_logger_instance;
 
     char buf[1024] ={0};
