@@ -382,12 +382,50 @@ void _nx_log_stderr(const char *fmt, ...){
     errno = errno_save;
 }
 
+static int nx_create_dir(const char *path_name)
+{
+
+    if(NULL == path_name)
+        return -1;
+
+    char   DirName[256] = {0};
+    int   i = 0,len = 0;
+    const char * sPathName = path_name;
+    strcpy(DirName, sPathName);
+    len  = strlen(DirName);
+    if(DirName[len-1]!='/')
+    {
+        strcat(DirName,   "/");
+    }
+
+    len  =  strlen(DirName);
+    for(i=1;   i<len;   i++)
+    {
+        if(DirName[i]=='/')
+        {
+            DirName[i] = 0;
+            if( access(DirName, 0)!=0)
+            {
+                if(mkdir(DirName, 0755)==-1)
+                {
+                    perror("mkdir   error");
+                    return   -1;
+                }
+            }
+            DirName[i]   =   '/';
+        }
+    }
+
+    return   0;
+}
+
 struct nx_logger * nx_logger_init(int asyn,int df_level,char * log_path, int log_file_max_size/*M*/){
 
     static struct nx_logger *l = (struct nx_logger *)&nx_logger_instance;
     int i =0;
     int status = NX_ERROR;
     l->inited = 0;
+    nx_create_dir(log_path);
 
     snprintf(l->log_path,sizeof(l->log_path),log_path);
     snprintf(l->rotate_format, sizeof(l->rotate_format),"%s","%Y%m%d%H%M%S");
