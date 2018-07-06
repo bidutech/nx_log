@@ -46,7 +46,7 @@ extern "C" {
     (int)strftime((char *)(_s), (size_t)(_n), fmt, tm)
 
 typedef enum {
-    NX_LEVEL_NULL,
+    NX_LEVEL_ON,/* open all log*/
     NX_LEVEL_DEBUG,
     NX_LEVEL_INFO,
     //NX_LEVEL_NOTICE,
@@ -75,6 +75,10 @@ typedef enum {
 
 #define NX_LOG_THREAD_NUM  3
 #define MAX_FILE_NAME   1024
+
+#define ASYN_LOG    1
+#define SYN_LOG     0
+
 
 // 1M
 #define DEFAULT_SIZE    1024*1024

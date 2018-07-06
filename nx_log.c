@@ -29,7 +29,7 @@ static int nx_log_file_exist(char * filename){
 }
 
 static int nx_log_loggable(struct nx_logger *l, int level){
-    if(l == NULL ||level >= NX_LEVEL_OFF || level <= NX_LEVEL_NULL){
+    if(l == NULL ||level >= NX_LEVEL_OFF || level < NX_LEVEL_ON){
         return 0;
     }
     if(l->inited !=1)
@@ -151,8 +151,10 @@ rotate:
     char tailformat[1024] = {0};
     nx_strftime(tailformat, 1024, l->rotate_format, localtime(&tv.tv_sec));
     l->log_files[level].count = (l->log_files[level].count) % 9;
-    snprintf(rotate,sizeof(rotate),"%s/%s_%s%d",l->log_path,
+
+    snprintf(rotate,sizeof(rotate),"%s/%s.%s_%s%d",l->log_path,l->prefilename,
              nx_log_name[level], tailformat, l->log_files[level].count);
+
     l->log_files[level].count++;
 
     if (0 !=stat(l->log_files[level].name, &info)){
@@ -191,7 +193,7 @@ static nx_log_level nx_log_2level(const char* level)
 {
     if (!level)
     {
-        return NX_LEVEL_NULL;
+        return NX_LEVEL_ON;
     }
 
     if (strcmp("DEBUG", level) == 0)
@@ -444,7 +446,7 @@ struct nx_logger * nx_logger_init(int asyn,int df_level,char *prefilename,
 
 
     for(i = 0; i < MAX_LOG_LEVEL_FILE; i++ ){
-        if(i == NX_LEVEL_NULL)
+        if(i == NX_LEVEL_ON)
             continue;
         if(l->inited != 1){
             snprintf(l->log_files[i].name,sizeof(l->log_files[i].name),
@@ -514,7 +516,7 @@ int nx_logger_deinit(struct nx_logger *l){
     int i =0;
 
     for(i = 0; i < MAX_LOG_LEVEL_FILE; i++ ){
-        if(i == NX_LEVEL_NULL)
+        if(i == NX_LEVEL_ON)
             continue;
         close(l->log_files[i].fd);
     }
@@ -600,7 +602,7 @@ void nx_syn_write_log(int  level,  const char* file,  const char* function,
 int test_nx_log(){
 
     char * logpath ="/data1/home/test/log/";
-    nx_logger_init(1,NX_LEVEL_NULL,"nx",logpath,10);
+    nx_logger_init(1,NX_LEVEL_ON,"nx",logpath,10);
 
     char *msg = logpath;
 
