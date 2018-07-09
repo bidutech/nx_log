@@ -21,7 +21,7 @@ int main(){
 int test_nx_log1(){
 
     char * logpath ="/data1/home/test/log/";
-    nx_logger_init(1,NX_LEVEL_ON,"nx",logpath,10);
+    nx_logger_init(ASYN_LOG,NX_LEVEL_ON,"nx",logpath,10);
 
     char *msg = logpath;
 

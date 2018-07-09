@@ -6,10 +6,13 @@ process and thread safe c log  lib
 
 sample:
 
+#include <stdio.h>
+#include <nx_log.h>
+
 void test()
 {
     char * logpath ="/data1/home/test/log";
-    nx_logger_init(1,NX_LEVEL_NULL,logpath,10);
+    nx_logger_init(ASYN_LOG,NX_LEVEL_NULL,logpath,10);
 
     char *msg = logpath;
 
