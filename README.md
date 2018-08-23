@@ -4,6 +4,8 @@
 this is a High efficiency log 
 process and thread safe c log  lib
 
+used in product
+
 sample:
 
 #include <stdio.h>
